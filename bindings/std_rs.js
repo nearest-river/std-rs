@@ -84,7 +84,7 @@ function makeMutClosure(arg0, arg1, dtor, f) {
     return real;
 }
 function __wbg_adapter_36(arg0, arg1, arg2) {
-    wasm._dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__hf2b3567ed2d6892c(arg0, arg1, addHeapObject(arg2));
+    wasm._dyn_core__ops__function__FnMut__A____Output___R_as_wasm_bindgen__closure__WasmClosure___describe__invoke__h83ab5c08334b4cb3(arg0, arg1, addHeapObject(arg2));
 }
 
 /**
@@ -179,6 +179,192 @@ export function read_to_string_sync(_this, read) {
         wasm.__wbindgen_add_to_stack_pointer(16);
         wasm.__wbindgen_free(deferred1_0, deferred1_1, 1);
     }
+}
+
+const cachedTextEncoder = (typeof TextEncoder !== 'undefined' ? new TextEncoder('utf-8') : { encode: () => { throw Error('TextEncoder not available') } } );
+
+const encodeString = function (arg, view) {
+    return cachedTextEncoder.encodeInto(arg, view);
+};
+
+function passStringToWasm0(arg, malloc, realloc) {
+
+    if (realloc === undefined) {
+        const buf = cachedTextEncoder.encode(arg);
+        const ptr = malloc(buf.length, 1) >>> 0;
+        getUint8Memory0().subarray(ptr, ptr + buf.length).set(buf);
+        WASM_VECTOR_LEN = buf.length;
+        return ptr;
+    }
+
+    let len = arg.length;
+    let ptr = malloc(len, 1) >>> 0;
+
+    const mem = getUint8Memory0();
+
+    let offset = 0;
+
+    for (; offset < len; offset++) {
+        const code = arg.charCodeAt(offset);
+        if (code > 0x7F) break;
+        mem[ptr + offset] = code;
+    }
+
+    if (offset !== len) {
+        if (offset !== 0) {
+            arg = arg.slice(offset);
+        }
+        ptr = realloc(ptr, len, len = offset + arg.length * 3, 1) >>> 0;
+        const view = getUint8Memory0().subarray(ptr + offset, ptr + len);
+        const ret = encodeString(arg, view);
+
+        offset += ret.written;
+        ptr = realloc(ptr, len, offset, 1) >>> 0;
+    }
+
+    WASM_VECTOR_LEN = offset;
+    return ptr;
+}
+
+function isLikeNone(x) {
+    return x === undefined || x === null;
+}
+/**
+* @param {number} ptr
+* @param {string | undefined} [name]
+* @returns {number}
+*/
+export function spawn_thread(ptr, name) {
+    var ptr0 = isLikeNone(name) ? 0 : passStringToWasm0(name, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
+    var len0 = WASM_VECTOR_LEN;
+    const ret = wasm.spawn_thread(ptr, ptr0, len0);
+    return ret >>> 0;
+}
+
+/**
+* @returns {number}
+*/
+export function available_parallelism() {
+    const ret = wasm.available_parallelism();
+    return ret >>> 0;
+}
+
+/**
+* @returns {number}
+*/
+export function current_thread() {
+    const ret = wasm.current_thread();
+    return ret >>> 0;
+}
+
+/**
+* @returns {boolean}
+*/
+export function thread_panicking() {
+    const ret = wasm.thread_panicking();
+    return ret !== 0;
+}
+
+/**
+*/
+export function park_thread() {
+    wasm.park_thread();
+}
+
+/**
+* @param {bigint} dur
+*/
+export function park_thread_with_timeout(dur) {
+    wasm.park_thread_with_timeout(dur);
+}
+
+/**
+* @param {bigint} dur
+*/
+export function sleep(dur) {
+    wasm.sleep(dur);
+}
+
+/**
+*/
+export function yield_now() {
+    wasm.yield_now();
+}
+
+/**
+* @param {number} _this
+* @returns {boolean}
+*/
+export function is_finished(_this) {
+    const ret = wasm.is_finished(_this);
+    return ret !== 0;
+}
+
+/**
+* @param {number} _this
+* @returns {number}
+*/
+export function thread(_this) {
+    const ret = wasm.thread(_this);
+    return ret >>> 0;
+}
+
+/**
+* @param {number} _this
+*/
+export function join(_this) {
+    wasm.join(_this);
+}
+
+/**
+* @param {number} _this
+* @returns {bigint}
+*/
+export function thread_id(_this) {
+    const ret = wasm.thread_id(_this);
+    return BigInt.asUintN(64, ret);
+}
+
+/**
+* @param {number} _this
+*/
+export function thread_unpark(_this) {
+    wasm.thread_unpark(_this);
+}
+
+/**
+* @param {number} _this
+* @returns {string | undefined}
+*/
+export function thread_name(_this) {
+    try {
+        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
+        wasm.thread_name(retptr, _this);
+        var r0 = getInt32Memory0()[retptr / 4 + 0];
+        var r1 = getInt32Memory0()[retptr / 4 + 1];
+        let v1;
+        if (r0 !== 0) {
+            v1 = getStringFromWasm0(r0, r1).slice();
+            wasm.__wbindgen_free(r0, r1 * 1, 1);
+        }
+        return v1;
+    } finally {
+        wasm.__wbindgen_add_to_stack_pointer(16);
+    }
+}
+
+/**
+* @param {number} this_ptr
+*/
+export function drop_thread(this_ptr) {
+    wasm.drop_thread(this_ptr);
+}
+
+/**
+* @param {number} this_ptr
+*/
+export function drop_join_handle(this_ptr) {
+    wasm.drop_join_handle(this_ptr);
 }
 
 /**
@@ -767,190 +953,12 @@ export function drop_vec(ptr) {
     wasm.drop_vec(ptr);
 }
 
-const cachedTextEncoder = (typeof TextEncoder !== 'undefined' ? new TextEncoder('utf-8') : { encode: () => { throw Error('TextEncoder not available') } } );
-
-const encodeString = function (arg, view) {
-    return cachedTextEncoder.encodeInto(arg, view);
-};
-
-function passStringToWasm0(arg, malloc, realloc) {
-
-    if (realloc === undefined) {
-        const buf = cachedTextEncoder.encode(arg);
-        const ptr = malloc(buf.length, 1) >>> 0;
-        getUint8Memory0().subarray(ptr, ptr + buf.length).set(buf);
-        WASM_VECTOR_LEN = buf.length;
-        return ptr;
-    }
-
-    let len = arg.length;
-    let ptr = malloc(len, 1) >>> 0;
-
-    const mem = getUint8Memory0();
-
-    let offset = 0;
-
-    for (; offset < len; offset++) {
-        const code = arg.charCodeAt(offset);
-        if (code > 0x7F) break;
-        mem[ptr + offset] = code;
-    }
-
-    if (offset !== len) {
-        if (offset !== 0) {
-            arg = arg.slice(offset);
-        }
-        ptr = realloc(ptr, len, len = offset + arg.length * 3, 1) >>> 0;
-        const view = getUint8Memory0().subarray(ptr + offset, ptr + len);
-        const ret = encodeString(arg, view);
-
-        offset += ret.written;
-        ptr = realloc(ptr, len, offset, 1) >>> 0;
-    }
-
-    WASM_VECTOR_LEN = offset;
-    return ptr;
-}
-
-function isLikeNone(x) {
-    return x === undefined || x === null;
-}
-/**
-* @param {number} ptr
-* @param {string | undefined} [name]
-* @returns {number}
-*/
-export function spawn_thread(ptr, name) {
-    var ptr0 = isLikeNone(name) ? 0 : passStringToWasm0(name, wasm.__wbindgen_malloc, wasm.__wbindgen_realloc);
-    var len0 = WASM_VECTOR_LEN;
-    const ret = wasm.spawn_thread(ptr, ptr0, len0);
-    return ret >>> 0;
-}
-
 /**
 * @returns {number}
 */
-export function available_parallelism() {
-    const ret = wasm.available_parallelism();
+export function _new() {
+    const ret = wasm._new();
     return ret >>> 0;
-}
-
-/**
-* @returns {number}
-*/
-export function current_thread() {
-    const ret = wasm.current_thread();
-    return ret >>> 0;
-}
-
-/**
-* @returns {boolean}
-*/
-export function thread_panicking() {
-    const ret = wasm.thread_panicking();
-    return ret !== 0;
-}
-
-/**
-*/
-export function park_thread() {
-    wasm.park_thread();
-}
-
-/**
-* @param {bigint} dur
-*/
-export function park_thread_with_timeout(dur) {
-    wasm.park_thread_with_timeout(dur);
-}
-
-/**
-* @param {bigint} dur
-*/
-export function sleep(dur) {
-    wasm.sleep(dur);
-}
-
-/**
-*/
-export function yield_now() {
-    wasm.yield_now();
-}
-
-/**
-* @param {number} _this
-* @returns {boolean}
-*/
-export function is_finished(_this) {
-    const ret = wasm.is_finished(_this);
-    return ret !== 0;
-}
-
-/**
-* @param {number} _this
-* @returns {number}
-*/
-export function thread(_this) {
-    const ret = wasm.thread(_this);
-    return ret >>> 0;
-}
-
-/**
-* @param {number} _this
-*/
-export function join(_this) {
-    wasm.join(_this);
-}
-
-/**
-* @param {number} _this
-* @returns {bigint}
-*/
-export function thread_id(_this) {
-    const ret = wasm.thread_id(_this);
-    return BigInt.asUintN(64, ret);
-}
-
-/**
-* @param {number} _this
-*/
-export function thread_unpark(_this) {
-    wasm.thread_unpark(_this);
-}
-
-/**
-* @param {number} _this
-* @returns {string | undefined}
-*/
-export function thread_name(_this) {
-    try {
-        const retptr = wasm.__wbindgen_add_to_stack_pointer(-16);
-        wasm.thread_name(retptr, _this);
-        var r0 = getInt32Memory0()[retptr / 4 + 0];
-        var r1 = getInt32Memory0()[retptr / 4 + 1];
-        let v1;
-        if (r0 !== 0) {
-            v1 = getStringFromWasm0(r0, r1).slice();
-            wasm.__wbindgen_free(r0, r1 * 1, 1);
-        }
-        return v1;
-    } finally {
-        wasm.__wbindgen_add_to_stack_pointer(16);
-    }
-}
-
-/**
-* @param {number} this_ptr
-*/
-export function drop_thread(this_ptr) {
-    wasm.drop_thread(this_ptr);
-}
-
-/**
-* @param {number} this_ptr
-*/
-export function drop_join_handle(this_ptr) {
-    wasm.drop_join_handle(this_ptr);
 }
 
 /**
@@ -966,7 +974,7 @@ export function u8_new_vec() {
 * @returns {number}
 */
 export function u8_new_vec_with_capacity(capacity) {
-    const ret = wasm.u8_new_vec_with_capacity(capacity);
+    const ret = wasm.i8_new_vec_with_capacity(capacity);
     return ret >>> 0;
 }
 
@@ -1270,7 +1278,7 @@ export function u8_vec_reserve(_this, additional) {
 * @param {number} additional
 */
 export function u8_vec_reserve_exact(_this, additional) {
-    wasm.i8_vec_reserve_exact(_this, additional);
+    wasm.u8_vec_reserve_exact(_this, additional);
 }
 
 /**
@@ -1384,7 +1392,7 @@ export function u8_vec_splice_vec(_this, start, count, replace_with) {
 * @returns {number}
 */
 export function u8_vec_split_off(_this, at) {
-    const ret = wasm.u8_vec_split_off(_this, at);
+    const ret = wasm.i8_vec_split_off(_this, at);
     return ret >>> 0;
 }
 
@@ -2740,7 +2748,7 @@ export function u32_vec_truncate(_this, len) {
 * @returns {Slice}
 */
 export function u32_vec_windows(_this, size) {
-    const ret = wasm.i32_vec_windows(_this, size);
+    const ret = wasm.f32_vec_windows(_this, size);
     return Slice.__wrap(ret);
 }
 
@@ -3391,7 +3399,7 @@ export function u64_vec_truncate(_this, len) {
 * @returns {Slice}
 */
 export function u64_vec_windows(_this, size) {
-    const ret = wasm.i64_vec_windows(_this, size);
+    const ret = wasm.f64_vec_windows(_this, size);
     return Slice.__wrap(ret);
 }
 
@@ -5177,7 +5185,7 @@ export function i32_vec_truncate(_this, len) {
 * @returns {Slice}
 */
 export function i32_vec_windows(_this, size) {
-    const ret = wasm.i32_vec_windows(_this, size);
+    const ret = wasm.f32_vec_windows(_this, size);
     return Slice.__wrap(ret);
 }
 
@@ -5805,7 +5813,7 @@ export function i64_vec_truncate(_this, len) {
 * @returns {Slice}
 */
 export function i64_vec_windows(_this, size) {
-    const ret = wasm.i64_vec_windows(_this, size);
+    const ret = wasm.f64_vec_windows(_this, size);
     return Slice.__wrap(ret);
 }
 
@@ -7118,8 +7126,8 @@ function handleError(f, args) {
         wasm.__wbindgen_exn_store(addHeapObject(e));
     }
 }
-function __wbg_adapter_755(arg0, arg1, arg2, arg3) {
-    wasm.wasm_bindgen__convert__closures__invoke2_mut__h0b2ac5c0b2d583fc(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
+function __wbg_adapter_756(arg0, arg1, arg2, arg3) {
+    wasm.wasm_bindgen__convert__closures__invoke2_mut__h2f171f1d7c716805(arg0, arg1, addHeapObject(arg2), addHeapObject(arg3));
 }
 
 const SliceFinalization = (typeof FinalizationRegistry === 'undefined')
@@ -7185,7 +7193,7 @@ const imports = {
                     const a = state0.a;
                     state0.a = 0;
                     try {
-                        return __wbg_adapter_755(a, state0.b, arg0, arg1);
+                        return __wbg_adapter_756(a, state0.b, arg0, arg1);
                     } finally {
                         state0.a = a;
                     }
@@ -7402,8 +7410,8 @@ const imports = {
             const ret = Promise.resolve(getObject(arg0));
             return addHeapObject(ret);
         },
-        __wbindgen_closure_wrapper122: function(arg0, arg1, arg2) {
-            const ret = makeMutClosure(arg0, arg1, 29, __wbg_adapter_36);
+        __wbindgen_closure_wrapper176: function(arg0, arg1, arg2) {
+            const ret = makeMutClosure(arg0, arg1, 31, __wbg_adapter_36);
             return addHeapObject(ret);
         },
     },

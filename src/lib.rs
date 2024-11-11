@@ -3,9 +3,9 @@
 pub(crate) mod util_macro;
 
 mod io;
-mod vec;
-mod slice;
+mod hash;
 mod thread;
+mod collections;
 mod typed_array;
 
 mod throwable;
@@ -15,9 +15,9 @@ pub(crate) use throwable::*;
 
 
 pub use io::*;
-pub use vec::*;
-pub use slice::*;
+pub use hash::*;
 pub use thread::*;
+pub use collections::*;
 pub use typed_array::*;
 
 

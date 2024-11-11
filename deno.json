@@ -1,7 +1,7 @@
 {
   "tasks": {
-    "check": "deno run --unstable --check mod.ts",
-    "debug": "deno run --unstable -A debug.ts",
+    "check": "deno --unstable-ffi --check mod.ts",
+    "debug": "deno --unstable-ffi -A debug.ts",
     "generate": "cargo b --release && wasm-bindgen ./target/wasm32-unknown-unknown/release/std_rs.wasm --out-dir bindings --target deno"
   }
 }
